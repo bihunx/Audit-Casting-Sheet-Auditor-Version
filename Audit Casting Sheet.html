@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Audit Casting Sheet — Auditor Version</title>
+<style>
+  :root{ 
+    --bg:#f5f7fb; 
+    --panel:#fff; 
+    --accent:#2b3a67; 
+    --accent2:#1f2b4a; 
+    --text:#111827; 
+    --muted:#6b7280;
+    --success:#10b981;
+    --warning:#f59e0b;
+    --error:#ef4444;
+    --border:#e5e7eb;
+    --shadow:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);
+  }
+  
+  body{
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+  }
+  
+  header{
+    background:var(--accent);
+    color:#fff;
+    padding:14px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .wrap{
+    max-width:1100px;
+    margin:18px auto;
+    padding:0 16px;
+  }
+  
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+    background:var(--panel);
+    padding:8px;
+    border-radius:8px;
+    box-shadow:var(--shadow);
+  }
+  
+  .tab{
+    flex:1;
+    text-align:center;
+    padding:12px 8px;
+    background:#f8fafc;
+    color:var(--text);
+    cursor:pointer;
+    border-radius:6px;
+    border:1px solid var(--border);
+    transition:all 0.2s ease;
+    font-weight:500;
+    min-width:120px;
+  }
+  
+  .tab:hover{
+    background:#f1f5f9;
+  }
+  
+  .tab.active{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+  }
+  
+  .panel{
+    background:var(--panel);
+    padding:20px;
+    border-radius:8px;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+  }
+  
+  .panel h3{
+    margin-top:0;
+    margin-bottom:16px;
+    color:var(--accent);
+    font-size:1.25rem;
+  }
+  
+  .row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:16px;
+  }
+  
+  input[type=number],select,input[type=text]{
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    font-size:0.95rem;
+    transition:border-color 0.2s ease;
+  }
+  
+  input[type=number]:focus,select:focus,input[type=text]:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(43, 58, 103, 0.1);
+  }
+  
+  button{
+    padding:10px 14px;
+    border-radius:6px;
+    border:none;
+    background:var(--accent);
+    color:#fff;
+    cursor:pointer;
+    font-weight:500;
+    transition:all 0.2s ease;
+  }
+  
+  button:hover{
+    background:var(--accent2);
+    transform:translateY(-1px);
+  }
+  
+  button:active{
+    transform:translateY(0);
+  }
+  
+  button.secondary{
+    background:#f1f5f9;
+    color:var(--text);
+    border:1px solid var(--border);
+  }
+  
+  button.secondary:hover{
+    background:#e2e8f0;
+  }
+  
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:16px;
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,0.05);
+  }
+  
+  th,td{
+    border:1px solid var(--border);
+    padding:12px;
+    text-align:right;
+  }
+  
+  th{
+    background:#f8fafc;
+    text-align:left;
+    font-weight:600;
+    color:var(--accent);
+  }
+  
+  td.left{
+    text-align:left;
+  }
+  
+  .actions{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+  }
+  
+  .small-btn{
+    padding:6px 10px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+    font-size:0.85rem;
+    transition:all 0.2s ease;
+  }
+  
+  .edit{
+    background:#fff;
+    color:var(--accent);
+    border:1px solid var(--accent);
+  }
+  
+  .edit:hover{
+    background:var(--accent);
+    color:#fff;
+  }
+  
+  .del{
+    background:#fff;
+    color:var(--error);
+    border:1px solid var(--error);
+  }
+  
+  .del:hover{
+    background:var(--error);
+    color:#fff;
+  }
+  
+  .summary-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:16px;
+  }
+  
+  .stat{
+    padding:16px;
+    border-radius:6px;
+    background:#fbfbff;
+    border:1px solid #eef;
+    box-shadow:0 1px 2px rgba(0,0,0,0.05);
+  }
+  
+  .stat h4{
+    margin-top:0;
+    margin-bottom:12px;
+    color:var(--accent);
+    border-bottom:1px solid var(--border);
+    padding-bottom:8px;
+  }
+  
+  footer{
+    margin:24px 0;
+    text-align:center;
+    color:var(--muted);
+    font-size:0.9rem;
+  }
+  
+  .credit{
+    user-select:none;
+    -webkit-user-select:none;
+    pointer-events:none;
+  }
+  
+  .quick-box{
+    padding:16px;
+    border-radius:8px;
+    background:#fff;
+    border:1px solid var(--border);
+    margin-top:16px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.05);
+  }
+  
+  .ok{
+    color:var(--success);
+    font-weight:600;
+  }
+  
+  .warn{
+    color:var(--warning);
+    font-weight:600;
+  }
+  
+  .err{
+    color:var(--error);
+    font-weight:600;
+  }
+  
+  .profit{
+    color:var(--success);
+    font-weight:600;
+  }
+  
+  .loss{
+    color:var(--error);
+    font-weight:600;
+  }
+  
+  .toolbar{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  
+  .status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    padding:4px 8px;
+    border-radius:4px;
+    font-size:0.85rem;
+    font-weight:500;
+  }
+  
+  .status-ok{
+    background:rgba(16, 185, 129, 0.1);
+    color:var(--success);
+  }
+  
+  .status-warn{
+    background:rgba(245, 158, 11, 0.1);
+    color:var(--warning);
+  }
+  
+  .status-error{
+    background:rgba(239, 68, 68, 0.1);
+    color:var(--error);
+  }
+  
+  .chart-container{
+    margin-top:20px;
+    background:#fff;
+    border-radius:8px;
+    padding:16px;
+    box-shadow:var(--shadow);
+  }
+  
+  .chart-placeholder{
+    height:200px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f8fafc;
+    border-radius:6px;
+    color:var(--muted);
+    font-style:italic;
+  }
+  
+  .help-text{
+    color:var(--muted);
+    font-size:0.9rem;
+    margin-top:8px;
+  }
+  
+  .input-group{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    margin-bottom:12px;
+  }
+  
+  .input-group label{
+    font-weight:500;
+    color:var(--accent);
+  }
+  
+  @media (max-width:720px){
+    .summary-grid{
+      grid-template-columns:1fr;
+    }
+    
+    .row{
+      flex-direction:column;
+      align-items:stretch;
+    }
+    
+    .tabs{
+      flex-direction:column;
+    }
+    
+    .tab{
+      min-width:auto;
+    }
+    
+    .toolbar{
+      flex-direction:column;
+      align-items:stretch;
+    }
+    
+    .toolbar label{
+      margin-left:0;
+      margin-top:8px;
+    }
+  }
+  
+  @media print{
+    .tabs,button,input,select{
+      display:none!important;
+    }
+    
+    header{
+      background:#fff;
+      color:#000;
+    }
+    
+    .panel{
+      box-shadow:none;
+      border:1px solid #ddd;
+    }
+  }
+</style>
+</head>
+<body>
+<header><h1>Audit Casting Sheet — Auditor Version</h1></header>
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" id="tabNonCurrent">Non-Current Assets</div>
+    <div class="tab" id="tabCurrent">Current Assets</div>
+    <div class="tab" id="tabNonCurrentLiab">Non-Current Liabilities</div>
+    <div class="tab" id="tabCurrentLiab">Current Liabilities</div>
+    <div class="tab" id="tabEquity">Equity / Net Assets</div>
+    <div class="tab" id="tabPnl">Income & Expenses</div>
+    <div class="tab" id="tabSummary">Summary</div>
+  </div>
+
+  <div class="toolbar">
+    <button id="btnSave">Save Session as JSON</button>
+    <button id="btnLoad">Load Session from JSON</button>
+    <button id="btnClear" class="secondary">Clear All</button>
+    <button id="btnExportCSV">Export CSV</button>
+    <button id="btnImportCSV">Import CSV</button>
+    <label style="margin-left:auto">Theme: <select id="themeSelect"><option value="professional">Professional</option><option value="calm">Calm</option><option value="happy">Happy</option><option value="dark">Dark</option></select></label>
+  </div>
+
+  <!-- Non-current assets -->
+  <div class="panel" id="panelNonCurrent">
+    <h3>Non-Current Assets</h3>
+    <p class="help-text">Select a category, enter the amount, and press Enter to add</p>
+    <div class="row" style="margin-bottom:16px">
+      <div class="input-group" style="flex:1">
+        <label for="ncCategory">Category</label>
+        <select id="ncCategory">
+          <option value="nc_main">Non-Current Assets</option>
+          <option value="ppe">Property, Plant & Equipment</option>
+          <option value="investments">Investment Property / Long-term Investments</option>
+          <option value="intangible">Intangible assets</option>
+          <option value="right_of_use">Right-of-use assets</option>
+          <option value="biological">Biological assets</option>
+          <option value="deferred_tax_asset">Deferred tax assets</option>
+          <option value="other_non_current">Other non-current assets</option>
+        </select>
+      </div>
+      <div class="input-group" style="width:220px">
+        <label for="ncAmount">Amount</label>
+        <input type="number" id="ncAmount" placeholder="Enter amount" />
+      </div>
+    </div>
+    <div style="overflow:auto;max-height:320px">
+      <table id="ncTable">
+        <thead>
+          <tr>
+            <th class="left">Category</th>
+            <th>Amount</th>
+            <th>Rounded (mil)</th>
+            <th style="width:120px">Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td class="left"><strong>Total Non-Current Assets</strong></td>
+            <td id="totalNc">RM 0.00</td>
+            <td id="totalNcM">0.00 m</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="left">Reported Total Non-Current Assets</td>
+            <td><input type="number" id="reportedNc" style="width:120px" /></td>
+            <td id="statusNc"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Current assets -->
+  <div class="panel" id="panelCurrent" style="display:none">
+    <h3>Current Assets</h3>
+    <p class="help-text">Select a category, enter the amount, and press Enter to add</p>
+    <div class="row" style="margin-bottom:16px">
+      <div class="input-group" style="flex:1">
+        <label for="cCategory">Category</label>
+        <select id="cCategory">
+          <option value="c_main">Current Assets</option>
+          <option value="cash">Cash & Bank</option>
+          <option value="receivables">Trade & Other Receivables</option>
+          <option value="inventories">Inventories</option>
+          <option value="prepayments">Prepayments</option>
+          <option value="short_investments">Short-term investments</option>
+          <option value="other_current">Other current assets</option>
+        </select>
+      </div>
+      <div class="input-group" style="width:220px">
+        <label for="cAmount">Amount</label>
+        <input type="number" id="cAmount" placeholder="Enter amount" />
+      </div>
+    </div>
+    <div style="overflow:auto;max-height:320px">
+      <table id="cTable">
+        <thead>
+          <tr>
+            <th class="left">Category</th>
+            <th>Amount</th>
+            <th>Rounded (mil)</th>
+            <th style="width:120px">Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td class="left"><strong>Total Current Assets</strong></td>
+            <td id="totalC">RM 0.00</td>
+            <td id="totalCM">0.00 m</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="left">Reported Total Current Assets</td>
+            <td><input type="number" id="reportedC" style="width:120px" /></td>
+            <td id="statusC"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Non-current liabilities -->
+  <div class="panel" id="panelNonCurrentLiab" style="display:none">
+    <h3>Non-Current Liabilities</h3>
+    <p class="help-text">Select a category, enter the amount, and press Enter to add</p>
+    <div class="row" style="margin-bottom:16px">
+      <div class="input-group" style="flex:1">
+        <label for="nclCategory">Category</label>
+        <select id="nclCategory">
+          <option value="ncl_main">Non-Current Liabilities</option>
+          <option value="long_term_loans">Long-term loans</option>
+          <option value="deferred_tax">Deferred tax liabilities</option>
+          <option value="provisions_ncl">Provisions (non-current)</option>
+          <option value="lease_liab">Lease liabilities</option>
+          <option value="other_ncl">Other non-current liabilities</option>
+        </select>
+      </div>
+      <div class="input-group" style="width:220px">
+        <label for="nclAmount">Amount</label>
+        <input type="number" id="nclAmount" placeholder="Enter amount" />
+      </div>
+    </div>
+    <div style="overflow:auto;max-height:320px">
+      <table id="nclTable">
+        <thead>
+          <tr>
+            <th class="left">Category</th>
+            <th>Amount</th>
+            <th>Rounded (mil)</th>
+            <th style="width:120px">Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td class="left"><strong>Total Non-Current Liabilities</strong></td>
+            <td id="totalNcl">RM 0.00</td>
+            <td id="totalNclM">0.00 m</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="left">Reported Total Non-Current Liabilities</td>
+            <td><input type="number" id="reportedNcl" style="width:120px" /></td>
+            <td id="statusNcl"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Current liabilities -->
+  <div class="panel" id="panelCurrentLiab" style="display:none">
+    <h3>Current Liabilities</h3>
+    <p class="help-text">Select a category, enter the amount, and press Enter to add</p>
+    <div class="row" style="margin-bottom:16px">
+      <div class="input-group" style="flex:1">
+        <label for="clCategory">Category</label>
+        <select id="clCategory">
+          <option value="cl_main">Current Liabilities</option>
+          <option value="trade_payables">Trade payables</option>
+          <option value="short_borrowings">Short-term borrowings</option>
+          <option value="current_provisions">Provisions (current)</option>
+          <option value="accruals">Accruals</option>
+          <option value="tax_liabilities">Current tax liabilities</option>
+          <option value="other_cl">Other current liabilities</option>
+        </select>
+      </div>
+      <div class="input-group" style="width:220px">
+        <label for="clAmount">Amount</label>
+        <input type="number" id="clAmount" placeholder="Enter amount" />
+      </div>
+    </div>
+    <div style="overflow:auto;max-height:320px">
+      <table id="clTable">
+        <thead>
+          <tr>
+            <th class="left">Category</th>
+            <th>Amount</th>
+            <th>Rounded (mil)</th>
+            <th style="width:120px">Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td class="left"><strong>Total Current Liabilities</strong></td>
+            <td id="totalCl">RM 0.00</td>
+            <td id="totalClM">0.00 m</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="left">Reported Total Current Liabilities</td>
+            <td><input type="number" id="reportedCl" style="width:120px" /></td>
+            <td id="statusCl"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Equity -->
+  <div class="panel" id="panelEquity" style="display:none">
+    <h3>Equity / Net Assets</h3>
+    <p class="help-text">Select a category, enter the amount, and press Enter to add</p>
+    <div class="row" style="margin-bottom:16px">
+      <div class="input-group" style="flex:1">
+        <label for="eqCategory">Category</label>
+        <select id="eqCategory">
+          <option value="eq_main">Equity / Net Assets</option>
+          <option value="accumulated_surplus">Accumulated surplus / retained earnings</option>
+          <option value="reserves">Reserves</option>
+          <option value="contributed_capital">Contributed capital</option>
+          <option value="other_equity">Other equity</option>
+        </select>
+      </div>
+      <div class="input-group" style="width:220px">
+        <label for="eqAmount">Amount</label>
+        <input type="number" id="eqAmount" placeholder="Enter amount" />
+      </div>
+    </div>
+    <div style="overflow:auto;max-height:320px">
+      <table id="eqTable">
+        <thead>
+          <tr>
+            <th class="left">Category</th>
+            <th>Amount</th>
+            <th>Rounded (mil)</th>
+            <th style="width:120px">Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td class="left"><strong>Total Equity</strong></td>
+            <td id="totalEq">RM 0.00</td>
+            <td id="totalEqM">0.00 m</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="left">Reported Total Equity</td>
+            <td><input type="number" id="reportedEq" style="width:120px" /></td>
+            <td id="statusEq"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- P&L -->
+  <div class="panel" id="panelPnl" style="display:none">
+    <h3>Income & Expenses</h3>
+    <p class="help-text">Select a category, enter the amount, and press Enter to add. Expenses should be entered as positive numbers.</p>
+    <div class="row" style="margin-bottom:16px">
+      <div class="input-group" style="flex:1">
+        <label for="plCategory">Category</label>
+        <select id="plCategory">
+          <option value="income">Income</option>
+          <option value="other_income">Other Income</option>
+          <option value="expense">Expense</option>
+          <option value="finance_cost">Finance Cost</option>
+        </select>
+      </div>
+      <div class="input-group" style="width:220px">
+        <label for="plAmount">Amount</label>
+        <input type="number" id="plAmount" placeholder="Enter amount" />
+      </div>
+    </div>
+    <div style="overflow:auto;max-height:320px">
+      <table id="plTable">
+        <thead>
+          <tr>
+            <th class="left">Category</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Rounded (mil)</th>
+            <th style="width:120px">Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td class="left"><strong>Total Income</strong></td>
+            <td></td>
+            <td id="totalIncome">RM 0.00</td>
+            <td id="totalIncomeM">0.00 m</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="left"><strong>Total Expenses</strong></td>
+            <td></td>
+            <td id="totalExpenses">RM 0.00</td>
+            <td id="totalExpensesM">0.00 m</td>
+            <td></td>
+          </tr>
+          <tr style="background:#f8fafc">
+            <td class="left"><strong>Net Profit/(Loss)</strong></td>
+            <td></td>
+            <td id="netProfitLoss">RM 0.00</td>
+            <td id="netProfitLossM">0.00 m</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="left">Reported Net Profit/(Loss)</td>
+            <td></td>
+            <td><input type="number" id="reportedPl" style="width:120px" /></td>
+            <td id="statusPl"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="panel" id="panelSummary" style="display:none">
+    <h3>Financial Statement Summary</h3>
+    <div class="row" style="margin-bottom:16px">
+      <div class="input-group" style="flex:1">
+        <label for="reportTitle">Report Title</label>
+        <input type="text" id="reportTitle" placeholder="Enter report title for printing" />
+      </div>
+      <div class="input-group" style="width:220px">
+        <label for="summaryView">View</label>
+        <select id="summaryView">
+          <option value="all">All Categories</option>
+          <option value="assets">Assets Only</option>
+          <option value="liabilities">Liabilities Only</option>
+          <option value="equity">Equity Only</option>
+          <option value="quick">Quick Casting View</option>
+        </select>
+      </div>
+      <div class="input-group" style="width:120px">
+        <label for="currencySelect">Currency</label>
+        <select id="currencySelect"><option>RM</option><option>MYR</option><option>USD</option><option>SGD</option></select>
+      </div>
+      <div style="align-self:flex-end">
+        <button id="btnPrint">Print</button>
+      </div>
+    </div>
+
+    <div id="quickCasting" class="quick-box" style="display:none">
+      <h4 style="margin-top:0">Quick Casting Check</h4>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><div><strong>Total Assets</strong></div><div id="qcTotalAssets">RM 0.00</div></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><div><strong>Total Liabilities</strong></div><div id="qcTotalLiab">RM 0.00</div></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0"><div><strong>Net Assets</strong></div><div id="qcNetAssets">RM 0.00</div></div>
+      <div id="qcStatus" style="margin-top:12px;padding:8px;border-radius:4px;text-align:center"></div>
+    </div>
+
+    <div class="summary-grid" id="detailedSummary">
+      <div class="stat"><h4>Assets</h4><div id="summaryAssets"></div></div>
+      <div class="stat"><h4>Liabilities</h4><div id="summaryLiab"></div></div>
+      <div class="stat"><h4>Equity</h4><div id="summaryEquity"></div></div>
+      <div class="stat"><h4>Profit / Loss</h4><div id="summaryPnl"></div></div>
+    </div>
+
+    <div class="chart-container">
+      <h4>Financial Overview</h4>
+      <div class="chart-placeholder">
+        Pie chart visualization would appear here with actual implementation
+      </div>
+    </div>
+
+    <table style="margin-top:20px">
+      <thead>
+        <tr>
+          <th class="left">Financial Metric</th>
+          <th>Amount</th>
+          <th>Rounded (mil)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">Total Assets</td>
+          <td id="totalAssets">RM 0.00</td>
+          <td id="totalAssetsM">0.00 m</td>
+        </tr>
+        <tr>
+          <td class="left">Total Liabilities</td>
+          <td id="totalLiab">RM 0.00</td>
+          <td id="totalLiabM">0.00 m</td>
+        </tr>
+        <tr style="background:#f8fafc">
+          <td class="left"><strong>Net Assets (Assets - Liabilities)</strong></td>
+          <td id="netAssets">RM 0.00</td>
+          <td id="netAssetsM">0.00 m</td>
+        </tr>
+        <tr>
+          <td class="left">Current Ratio (Current Assets / Current Liabilities)</td>
+          <td id="currentRatio">-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td class="left">Debt to Asset Ratio (Liabilities / Assets)</td>
+          <td id="debtAssetRatio">-</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td class="left">Net Asset Ratio (Net Assets / Assets)</td>
+          <td id="netAssetRatio">-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:20px;padding:16px;background:#f8fafc;border-radius:6px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <label style="font-weight:500">Reported Total Assets (for reconciliation)</label>
+        <input type="number" id="reportedAssets" style="width:200px" />
+        <button id="btnCheckCast">Check Casting</button>
+        <span id="castResult" style="margin-left:12px;font-weight:600"></span>
+      </div>
+    </div>
+  </div>
+
+  <footer><div id="credit" class="credit">by Rashid Zainol - JANN Sarawak 2025</div></footer>
+</div>
+
+<script>
+/* ================= SETTINGS ================= */
+const settings = { 
+  lang:'en', 
+  currency:'RM', 
+  mood:'professional', 
+  tolerancePct:0.005 
+};
+
+let state = { 
+  currency: settings.currency, 
+  data: { 
+    nc:[], 
+    c:[], 
+    ncl:[], 
+    cl:[], 
+    eq:[], 
+    pl:[] 
+  },
+  metadata: {
+    created: new Date().toISOString(),
+    lastModified: new Date().toISOString(),
+    version: '1.0'
+  }
+};
+
+/* ================ FORMATTERS =============== */
+function fmt(num){ 
+  if(!isFinite(num)) return state.currency+' 0.00'; 
+  return state.currency+' '+Number(num).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); 
+}
+
+function fmt0(num){ 
+  if(!isFinite(num)) return state.currency+' 0'; 
+  return state.currency+' '+Number(num).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); 
+}
+
+function fmtMil(num){ 
+  return Number(num/1_000_000).toFixed(2)+' m'; 
+}
+
+/* ================ TABS ================ */
+const tabs = { 
+  tabNonCurrent:'panelNonCurrent', 
+  tabCurrent:'panelCurrent', 
+  tabNonCurrentLiab:'panelNonCurrentLiab', 
+  tabCurrentLiab:'panelCurrentLiab', 
+  tabEquity:'panelEquity', 
+  tabPnl:'panelPnl', 
+  tabSummary:'panelSummary' 
+};
+
+Object.keys(tabs).forEach(id => {
+  document.getElementById(id).addEventListener('click', () => { 
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); 
+    document.getElementById(id).classList.add('active'); 
+    Object.values(tabs).forEach(v => document.getElementById(v).style.display = 'none'); 
+    document.getElementById(tabs[id]).style.display = 'block'; 
+    if(id === 'tabSummary') renderSummary(); 
+  });
+});
+
+/* ================ ADD / RENDER ============== */
+function addTo(type, category, amount){ 
+  if(!isFinite(amount) || amount <= 0) {
+    showNotification('Please enter a valid amount', 'error');
+    return;
+  }
+  
+  state.data[type].push({category, amount}); 
+  state.metadata.lastModified = new Date().toISOString();
+  renderType(type); 
+  saveSessionAuto(); 
+  showNotification('Entry added successfully', 'success');
+  
+  // Clear the input field after adding
+  const inputId = type + 'Amount';
+  document.getElementById(inputId).value = '';
+}
+
+function renderType(type){ 
+  const map = {
+    'nc':'ncTable',
+    'c':'cTable',
+    'ncl':'nclTable',
+    'cl':'clTable',
+    'eq':'eqTable',
+    'pl':'plTable'
+  }; 
+  
+  const tbody = document.getElementById(map[type]).querySelector('tbody'); 
+  tbody.innerHTML = ''; 
+  
+  if (type === 'pl') {
+    // Special rendering for P&L to show type and proper formatting
+    state.data[type].forEach((r, i) => { 
+      const tr = document.createElement('tr'); 
+      const typeClass = isIncomeCategory(r.category) ? 'profit' : 'loss';
+      tr.innerHTML = `
+        <td class='left'>${labelFor(r.category)}</td>
+        <td>${getPnlType(r.category)}</td>
+        <td style='text-align:right' class="${typeClass}">${fmt(r.amount)}</td>
+        <td style='text-align:right'>${fmtMil(r.amount)}</td>
+        <td style='text-align:center'>
+          <button class='small-btn edit' onclick="startEdit('${type}',${i})">Edit</button> 
+          <button class='small-btn del' onclick="deleteRow('${type}',${i})">Del</button>
+        </td>
+      `; 
+      tbody.appendChild(tr); 
+    });
+  } else {
+    // Standard rendering for other types
+    state.data[type].forEach((r, i) => { 
+      const tr = document.createElement('tr'); 
+      tr.innerHTML = `
+        <td class='left'>${labelFor(r.category)}</td>
+        <td style='text-align:right'>${fmt(r.amount)}</td>
+        <td style='text-align:right'>${fmtMil(r.amount)}</td>
+        <td style='text-align:center'>
+          <button class='small-btn edit' onclick="startEdit('${type}',${i})">Edit</button> 
+          <button class='small-btn del' onclick="deleteRow('${type}',${i})">Del</button>
+        </td>
+      `; 
+      tbody.appendChild(tr); 
+    });
+  }
+  
+  updateTotals(); 
+}
+
+function isIncomeCategory(category) {
+  return category === 'income' || category === 'other_income';
+}
+
+function getPnlType(category) {
+  if (category === 'income' || category === 'other_income') return 'Income';
+  if (category === 'expense' || category === 'finance_cost') return 'Expense';
+  return 'Other';
+}
+
+function labelFor(cat){ 
+  const m = {
+    nc_main:'Non-Current Assets',
+    ppe:'PPE',
+    investments:'Investments',
+    intangible:'Intangible assets',
+    right_of_use:'Right-of-use assets',
+    biological:'Biological assets',
+    deferred_tax_asset:'Deferred tax asset',
+    other_non_current:'Other non-current assets',
+    c_main:'Current Assets',
+    cash:'Cash & Bank',
+    receivables:'Receivables',
+    inventories:'Inventories',
+    prepayments:'Prepayments',
+    short_investments:'Short-term investments',
+    other_current:'Other current assets',
+    ncl_main:'Non-Current Liabilities',
+    long_term_loans:'Long-term loans',
+    deferred_tax:'Deferred tax liabilities',
+    provisions_ncl:'Provisions (non-current)',
+    lease_liab:'Lease liabilities',
+    other_ncl:'Other non-current liabilities',
+    cl_main:'Current Liabilities',
+    trade_payables:'Trade payables',
+    short_borrowings:'Short-term borrowings',
+    current_provisions:'Provisions (current)',
+    accruals:'Accruals',
+    tax_liabilities:'Current tax liabilities',
+    other_cl:'Other current liabilities',
+    eq_main:'Equity / Net Assets',
+    accumulated_surplus:'Accumulated surplus',
+    reserves:'Reserves',
+    contributed_capital:'Contributed capital',
+    other_equity:'Other equity',
+    income:'Income',
+    expense:'Expense',
+    other_income:'Other Income',
+    finance_cost:'Finance Cost'
+  }; 
+  
+  return m[cat] || cat; 
+}
+
+function startEdit(type, index){ 
+  const r = state.data[type][index]; 
+  const newVal = prompt('Edit amount for ' + labelFor(r.category), r.amount); 
+  
+  if(newVal === null) return; 
+  
+  const v = parseFloat(newVal); 
+  if(!isFinite(v) || v < 0){
+    showNotification('Invalid amount entered', 'error');
+    return;
+  } 
+  
+  state.data[type][index].amount = v; 
+  state.metadata.lastModified = new Date().toISOString();
+  renderType(type); 
+  saveSessionAuto(); 
+  showNotification('Entry updated successfully', 'success');
+}
+
+function deleteRow(type, index){ 
+  if(!confirm('Delete this entry?')) return; 
+  
+  state.data[type].splice(index, 1); 
+  state.metadata.lastModified = new Date().toISOString();
+  renderType(type); 
+  saveSessionAuto(); 
+  showNotification('Entry deleted', 'warning');
+}
+
+/* ================ TOTALS & STATUS ================ */
+function updateTotals(){ 
+  const totalNc = sumArray(state.data.nc); 
+  const totalC = sumArray(state.data.c); 
+  const totalNcl = sumArray(state.data.ncl); 
+  const totalCl = sumArray(state.data.cl); 
+  const totalEq = sumArray(state.data.eq); 
+  
+  // Calculate P&L properly: Income - Expenses = Profit/Loss
+  const totalIncome = sumPnlByType('income') + sumPnlByType('other_income');
+  const totalExpenses = sumPnlByType('expense') + sumPnlByType('finance_cost');
+  const netProfitLoss = totalIncome - totalExpenses;
+  
+  document.getElementById('totalNc').textContent = fmt(totalNc); 
+  document.getElementById('totalNcM').textContent = fmtMil(totalNc);
+  document.getElementById('totalC').textContent = fmt(totalC); 
+  document.getElementById('totalCM').textContent = fmtMil(totalC);
+  document.getElementById('totalNcl').textContent = fmt(totalNcl); 
+  document.getElementById('totalNclM').textContent = fmtMil(totalNcl);
+  document.getElementById('totalCl').textContent = fmt(totalCl); 
+  document.getElementById('totalClM').textContent = fmtMil(totalCl);
+  document.getElementById('totalEq').textContent = fmt(totalEq); 
+  document.getElementById('totalEqM').textContent = fmtMil(totalEq);
+  
+  // Update P&L totals
+  document.getElementById('totalIncome').textContent = fmt(totalIncome);
+  document.getElementById('totalIncomeM').textContent = fmtMil(totalIncome);
+  document.getElementById('totalExpenses').textContent = fmt(totalExpenses);
+  document.getElementById('totalExpensesM').textContent = fmtMil(totalExpenses);
+  
+  const netProfitLossElement = document.getElementById('netProfitLoss');
+  const netProfitLossMElement = document.getElementById('netProfitLossM');
+  
+  netProfitLossElement.textContent = fmt(netProfitLoss);
+  netProfitLossMElement.textContent = fmtMil(netProfitLoss);
+  
+  // Color code profit/loss
+  if (netProfitLoss >= 0) {
+    netProfitLossElement.className = 'profit';
+    netProfitLossMElement.className = 'profit';
+  } else {
+    netProfitLossElement.className = 'loss';
+    netProfitLossMElement.className = 'loss';
+  }
+  
+  // Update statuses for all reported fields
+  checkReportedStatus('Nc', totalNc);
+  checkReportedStatus('C', totalC);
+  checkReportedStatus('Ncl', totalNcl);
+  checkReportedStatus('Cl', totalCl);
+  checkReportedStatus('Eq', totalEq);
+  checkReportedStatus('Pl', netProfitLoss); // Now checking against calculated profit/loss
+}
+
+function sumPnlByType(category) {
+  return state.data.pl
+    .filter(item => item.category === category)
+    .reduce((sum, item) => sum + (isFinite(item.amount) ? item.amount : 0), 0);
+}
+
+function sumArray(arr) {
+  return arr.reduce((sum, item) => sum + (isFinite(item.amount) ? item.amount : 0), 0);
+}
+
+function checkReportedStatus(prefix, calculatedTotal) {
+  const reportedInput = document.getElementById('reported' + prefix);
+  const statusElement = document.getElementById('status' + prefix);
+  
+  if (!reportedInput || !statusElement) return;
+  
+  const reportedValue = parseFloat(reportedInput.value);
+  
+  // If no value entered, clear status
+  if (!isFinite(reportedValue)) {
+    statusElement.textContent = '';
+    return;
+  }
+  
+  const difference = reportedValue - calculatedTotal;
+  const tolerance = Math.max(1, Math.abs(calculatedTotal)) * settings.tolerancePct;
+  
+  // Determine status and styling
+  if (Math.abs(difference) <= tolerance) {
+    statusElement.innerHTML = `<span class="ok">✓ Match</span>`;
+  } else {
+    statusElement.innerHTML = `<span class="err">✗ Mismatch (${fmt0(difference)})</span>`;
+  }
+}
+
+/* ================ SUMMARY ================ */
+function renderSummary(){ 
+  updateTotals(); 
+  
+  const totalAssets = sumArray(state.data.nc) + sumArray(state.data.c);
+  const totalLiab = sumArray(state.data.ncl) + sumArray(state.data.cl);
+  const totalEq = sumArray(state.data.eq);
+  
+  // Calculate P&L for summary
+  const totalIncome = sumPnlByType('income') + sumPnlByType('other_income');
+  const totalExpenses = sumPnlByType('expense') + sumPnlByType('finance_cost');
+  const netProfitLoss = totalIncome - totalExpenses;
+  
+  // Update summary displays
+  document.getElementById('summaryAssets').innerHTML = `
+    <div style='display:flex;justify-content:space-between;padding:4px 0'>
+      <div>Non-Current:</div>
+      <div>${fmt(sumArray(state.data.nc))}</div>
+    </div>
+    <div style='display:flex;justify-content:space-between;padding:4px 0'>
+      <div>Current:</div>
+      <div>${fmt(sumArray(state.data.c))}</div>
+    </div>
+    <div style='display:flex;justify-content:space-between;padding:4px 0;border-top:1px solid var(--border);margin-top:4px'>
+      <div><strong>Total:</strong></div>
+      <div><strong>${fmt(totalAssets)}</strong></div>
+    </div>
+  `;
+  
+  document.getElementById('summaryLiab').innerHTML = `
+    <div style='display:flex;justify-content:space-between;padding:4px 0'>
+      <div>Non-Current:</div>
+      <div>${fmt(sumArray(state.data.ncl))}</div>
+    </div>
+    <div style='display:flex;justify-content:space-between;padding:4px 0'>
+      <div>Current:</div>
+      <div>${fmt(sumArray(state.data.cl))}</div>
+    </div>
+    <div style='display:flex;justify-content:space-between;padding:4px 0;border-top:1px solid var(--border);margin-top:4px'>
+      <div><strong>Total:</strong></div>
+      <div><strong>${fmt(totalLiab)}</strong></div>
+    </div>
+  `;
+  
+  document.getElementById('summaryEquity').innerHTML = `
+    <div style='display:flex;justify-content:space-between;padding:4px 0'>
+      <div>Equity:</div>
+      <div>${fmt(totalEq)}</div>
+    </div>
+    <div style='display:flex;justify-content:space-between;padding:4px 0;border-top:1px solid var(--border);margin-top:4px'>
+      <div><strong>Total:</strong></div>
+      <div><strong>${fmt(totalEq)}</strong></div>
+    </div>
+  `;
+  
+  // Update P&L summary with proper calculation
+  const profitLossClass = netProfitLoss >= 0 ? 'profit' : 'loss';
+  document.getElementById('summaryPnl').innerHTML = `
+    <div style='display:flex;justify-content:space-between;padding:4px 0'>
+      <div>Total Income:</div>
+      <div>${fmt(totalIncome)}</div>
+    </div>
+    <div style='display:flex;justify-content:space-between;padding:4px 0'>
+      <div>Total Expenses:</div>
+      <div>${fmt(totalExpenses)}</div>
+    </div>
+    <div style='display:flex;justify-content:space-between;padding:4px 0;border-top:1px solid var(--border);margin-top:4px'>
+      <div><strong>Net Profit/(Loss):</strong></div>
+      <div class="${profitLossClass}"><strong>${fmt(netProfitLoss)}</strong></div>
+    </div>
+  `;
+  
+  // Update main totals
+  document.getElementById('totalAssets').textContent = fmt(totalAssets);
+  document.getElementById('totalAssetsM').textContent = fmtMil(totalAssets);
+  document.getElementById('totalLiab').textContent = fmt(totalLiab);
+  document.getElementById('totalLiabM').textContent = fmtMil(totalLiab);
+  
+  const netAssets = totalAssets - totalLiab;
+  document.getElementById('netAssets').textContent = fmt(netAssets);
+  document.getElementById('netAssetsM').textContent = fmtMil(netAssets);
+  
+  // Update ratios
+  const currentAssets = sumArray(state.data.c);
+  const currentLiab = sumArray(state.data.cl);
+  const currentRatio = currentLiab !== 0 ? (currentAssets / currentLiab).toFixed(2) : '-';
+  const debtAssetRatio = totalAssets !== 0 ? (totalLiab / totalAssets).toFixed(2) : '-';
+  const netAssetRatio = totalAssets !== 0 ? (netAssets / totalAssets).toFixed(2) : '-';
+  
+  document.getElementById('currentRatio').textContent = currentRatio;
+  document.getElementById('debtAssetRatio').textContent = debtAssetRatio;
+  document.getElementById('netAssetRatio').textContent = netAssetRatio;
+  
+  // Update quick casting view
+  document.getElementById('qcTotalAssets').textContent = fmt(totalAssets);
+  document.getElementById('qcTotalLiab').textContent = fmt(totalLiab);
+  document.getElementById('qcNetAssets').textContent = fmt(netAssets);
+  
+  const view = document.getElementById('summaryView').value; 
+  document.getElementById('quickCasting').style.display = view === 'quick' ? 'block' : 'none'; 
+  document.getElementById('detailedSummary').style.display = view === 'quick' ? 'none' : 'grid'; 
+}
+
+/* ================ SESSION MANAGEMENT ================ */
+function saveSessionAuto(){ 
+  try { 
+    localStorage.setItem('audit_casting_v1', JSON.stringify(state)); 
+  } catch(e) {
+    console.error('Failed to save session locally:', e);
+  }
+}
+
+function saveSessionAsJSON() {
+  try {
+    // Update metadata
+    state.metadata.lastModified = new Date().toISOString();
+    state.metadata.totalEntries = Object.values(state.data).reduce((sum, arr) => sum + arr.length, 0);
+    
+    // Create a more descriptive filename
+    const date = new Date().toISOString().split('T')[0];
+    const totalAssets = sumArray(state.data.nc) + sumArray(state.data.c);
+    const filename = `audit-report-${date}-${fmt0(totalAssets).replace(/[^\d]/g, '')}.json`;
+    
+    // Create and download JSON file
+    const dataStr = JSON.stringify(state, null, 2);
+    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+    
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    showNotification('Session saved as JSON file', 'success');
+  } catch (error) {
+    showNotification('Error saving JSON file: ' + error.message, 'error');
+  }
+}
+
+function loadSessionFromJSON() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = event => {
+      try {
+        const loadedState = JSON.parse(event.target.result);
+        
+        // Validate the loaded data structure
+        if (!loadedState.data || !loadedState.currency) {
+          throw new Error('Invalid file format');
+        }
+        
+        // Ensure all required data arrays exist
+        const requiredArrays = ['nc', 'c', 'ncl', 'cl', 'eq', 'pl'];
+        requiredArrays.forEach(key => {
+          if (!Array.isArray(loadedState.data[key])) {
+            loadedState.data[key] = [];
+          }
+        });
+        
+        state = loadedState;
+        renderAll();
+        saveSessionAuto(); // Save to localStorage as backup
+        
+        // Show session info
+        const created = new Date(state.metadata.created).toLocaleDateString();
+        const entries = Object.values(state.data).reduce((sum, arr) => sum + arr.length, 0);
+        showNotification(`Session loaded (${entries} entries, created: ${created})`, 'success');
+      } catch (error) {
+        showNotification('Error loading JSON file: ' + error.message, 'error');
+      }
+    };
+    
+    reader.readAsText(file);
+  };
+  
+  input.click();
+}
+
+function clearAll(){ 
+  if(!confirm('Clear all data? This cannot be undone.')) return; 
+  
+  state.data = { 
+    nc:[], 
+    c:[], 
+    ncl:[], 
+    cl:[], 
+    eq:[], 
+    pl:[] 
+  };
+  
+  state.metadata = {
+    created: new Date().toISOString(),
+    lastModified: new Date().toISOString(),
+    version: '1.0'
+  };
+  
+  // Clear all reported input fields
+  ['reportedNc', 'reportedC', 'reportedNcl', 'reportedCl', 'reportedEq', 'reportedPl', 'reportedAssets'].forEach(id => {
+    const element = document.getElementById(id);
+    if (element) element.value = '';
+  });
+  
+  renderAll(); 
+  localStorage.removeItem('audit_casting_v1'); 
+  showNotification('All data cleared', 'warning');
+}
+
+/* ================ EXPORT/IMPORT ================ */
+function exportCSV(){ 
+  const rows = [['type,category,amount']]; 
+  Object.keys(state.data).forEach(type => { 
+    state.data[type].forEach(r => {
+      rows.push([type, r.category, r.amount]); 
+    }); 
+  }); 
+  
+  const csv = rows.map(r => r.join(',')).join('\n'); 
+  const blob = new Blob([csv], {type:'text/csv'}); 
+  const url = URL.createObjectURL(blob); 
+  const a = document.createElement('a'); 
+  a.href = url; 
+  a.download = 'audit_casting.csv'; 
+  a.click(); 
+  URL.revokeObjectURL(url); 
+  
+  showNotification('Data exported to CSV', 'success');
+}
+
+function importCSV(){ 
+  const input = document.createElement('input'); 
+  input.type = 'file'; 
+  input.accept = '.csv'; 
+  
+  input.onchange = e => { 
+    const file = e.target.files[0]; 
+    if(!file) return; 
+    
+    const reader = new FileReader(); 
+    reader.onload = event => { 
+      try {
+        const text = event.target.result; 
+        const lines = text.trim().split('\n'); 
+        
+        // Clear existing data
+        state.data = { nc:[], c:[], ncl:[], cl:[], eq:[], pl:[] };
+        
+        lines.forEach((line, index) => {
+          if(index === 0) return; // Skip header
+          
+          const cols = line.split(','); 
+          if(cols.length >= 3) {
+            const type = cols[0];
+            const category = cols[1];
+            const amount = parseFloat(cols[2]);
+            
+            if(state.data[type] && isFinite(amount)) {
+              state.data[type].push({category, amount});
+            }
+          }
+        });
+        
+        renderAll(); 
+        showNotification('CSV imported successfully', 'success');
+      } catch(error) {
+        showNotification('Error importing CSV: ' + error.message, 'error');
+      }
+    }; 
+    
+    reader.readAsText(file); 
+  }; 
+  
+  input.click(); 
+}
+
+/* ================ THEMES ================ */
+function applyTheme(name){ 
+  const themes = {
+    professional: {
+      '--bg':'#f5f7fb',
+      '--panel':'#fff',
+      '--accent':'#2b3a67',
+      '--accent2':'#1f2b4a',
+      '--text':'#111827',
+      '--muted':'#6b7280'
+    },
+    calm: {
+      '--bg':'#f0f7fb',
+      '--panel':'#fff',
+      '--accent':'#6fb3d2',
+      '--accent2':'#5aa6c6',
+      '--text':'#203647',
+      '--muted':'#4f6d7a'
+    },
+    happy: {
+      '--bg':'#fffbe6',
+      '--panel':'#fff',
+      '--accent':'#ffd54f',
+      '--accent2':'#ffca28',
+      '--text':'#2b2b2b',
+      '--muted':'#555'
+    },
+    dark: {
+      '--bg':'#0f1724',
+      '--panel':'#0b1220',
+      '--accent':'#1f2937',
+      '--accent2':'#111827',
+      '--text':'#e6eef8',
+      '--muted':'#9aa4b2'
+    }
+  }; 
+  
+  const theme = themes[name] || themes.professional; 
+  Object.keys(theme).forEach(key => {
+    document.documentElement.style.setProperty(key, theme[key]);
+  });
+  
+  settings.mood = name;
+}
+
+/* ================ UTILITIES ================ */
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.textContent = message;
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  `;
+  
+  if (type === 'success') {
+    notification.style.backgroundColor = '#10b981';
+  } else if (type === 'error') {
+    notification.style.backgroundColor = '#ef4444';
+  } else if (type === 'warning') {
+    notification.style.backgroundColor = '#f59e0b';
+  }
+  
+  document.body.appendChild(notification);
+  
+  // Animate in
+  setTimeout(() => notification.style.opacity = '1', 10);
+  
+  // Animate out and remove
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        document.body.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+function checkCasting(){ 
+  const reported = parseFloat(document.getElementById('reportedAssets').value);
+  const actual = sumArray(state.data.nc) + sumArray(state.data.c);
+  const result = document.getElementById('castResult');
+  
+  if(!isFinite(reported)){ 
+    result.textContent = 'Enter a valid amount'; 
+    result.className = 'err'; 
+    return; 
+  } 
+  
+  const difference = reported - actual;
+  const tolerance = Math.max(1, Math.abs(actual)) * settings.tolerancePct;
+  
+  if(Math.abs(difference) <= tolerance) {
+    result.textContent = '✓ Casting OK';
+    result.className = 'ok';
+  } else {
+    result.textContent = `✗ Mismatch (difference: ${fmt0(difference)})`;
+    result.className = 'err';
+  }
+}
+
+/* ================ INITIALIZATION ================ */
+function attachEnterHandlers() {
+  const inputMappings = [
+    { input: 'ncAmount', type: 'nc', category: 'ncCategory' },
+    { input: 'cAmount', type: 'c', category: 'cCategory' },
+    { input: 'nclAmount', type: 'ncl', category: 'nclCategory' },
+    { input: 'clAmount', type: 'cl', category: 'clCategory' },
+    { input: 'eqAmount', type: 'eq', category: 'eqCategory' },
+    { input: 'plAmount', type: 'pl', category: 'plCategory' }
+  ];
+  
+  inputMappings.forEach(mapping => {
+    const input = document.getElementById(mapping.input);
+    input.addEventListener('keydown', e => {
+      if(e.key === 'Enter') {
+        const category = document.getElementById(mapping.category).value;
+        const value = parseFloat(input.value);
+        
+        if(!isFinite(value) || value <= 0) {
+          showNotification('Please enter a valid amount', 'error');
+          return;
+        }
+        
+        addTo(mapping.type, category, value);
+        // Input is cleared in the addTo function
+      }
+    });
+  });
+}
+
+function renderAll() {
+  renderType('nc');
+  renderType('c');
+  renderType('ncl');
+  renderType('cl');
+  renderType('eq');
+  renderType('pl');
+  updateTotals();
+  renderSummary();
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  // Set up event listeners
+  attachEnterHandlers();
+  
+  document.getElementById('btnSave').addEventListener('click', saveSessionAsJSON);
+  document.getElementById('btnLoad').addEventListener('click', loadSessionFromJSON);
+  document.getElementById('btnClear').addEventListener('click', clearAll);
+  document.getElementById('btnExportCSV').addEventListener('click', exportCSV);
+  document.getElementById('btnImportCSV').addEventListener('click', importCSV);
+  document.getElementById('btnCheckCast').addEventListener('click', checkCasting);
+  document.getElementById('btnPrint').addEventListener('click', () => window.print());
+  
+  // Summary view handler
+  document.getElementById('summaryView').addEventListener('change', renderSummary);
+  
+  // Theme handler
+  document.getElementById('themeSelect').addEventListener('change', e => {
+    applyTheme(e.target.value);
+  });
+  
+  // Set up real-time checking for reported fields
+  ['reportedNc', 'reportedC', 'reportedNcl', 'reportedCl', 'reportedEq', 'reportedPl', 'reportedAssets'].forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('input', updateTotals);
+    }
+  });
+  
+  // Load saved session if exists
+  const savedSession = localStorage.getItem('audit_casting_v1');
+  if (savedSession) {
+    try {
+      state = JSON.parse(savedSession);
+      renderAll();
+      showNotification('Previous session loaded automatically', 'success');
+    } catch(e) {
+      console.error('Error loading saved session:', e);
+    }
+  }
+  
+  // Apply initial theme
+  applyTheme(settings.mood);
+  document.getElementById('themeSelect').value = settings.mood;
+  
+  // Initialize UI
+  updateTotals();
+  renderSummary();
+});
+</script>
+</body>
+</html>
